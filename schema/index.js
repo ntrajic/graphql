@@ -19,7 +19,8 @@ type Query {
 	counter: Int
 },
 type Mutation {
-	incrementCounter: Int
+	incrementCounter: Int,
+	decrementCounter(step: Int!): Int
 }
 `;
 
@@ -33,6 +34,10 @@ const rootValue = {
 	currentTime: () => new Date().toLocaleString(),
 	counter: () => count,
 	incrementCounter: () => ++count,
+	decrementCounter: ({step}) => {
+		count = count-step;
+		return count;
+	},
 	person: () => ({ firstName: 'Joe', lastName: 'Doe', age: 42 })  // <--bracket - object
 };
 
@@ -71,6 +76,7 @@ export { schema, rootValue };
 // 	}
 // }  
 
+// http://localhost:3000/?query={ person { firstName lastName age } }
 // http://localhost:3000/?query=%7B%0A%20%20person%20%7B%0A%20%20%20%20firstName%0A%20%20%20%20lastName%0A%20%20%20%20age%0A%20%20%7D%0A%7D%0A
 // {
 // 	person {
@@ -87,4 +93,14 @@ export { schema, rootValue };
 // 		"age": 42
 // 	  }
 // 	}
-//   }  
+//   }
+
+// counter state is 12
+// decrement counter with step 5
+// http://localhost:3000/?queryy=mutation { decrementCounter(step: 5) }
+// http://localhost:3000/?mutation { decrementCounter(step: 5) }
+// {
+// 	"data": {
+// 	  "decrementCounter": 7
+// 	}
+// }
