@@ -17,6 +17,9 @@ type Query {
 	currentTime: String,
 	person: Person,
 	counter: Int
+},
+type Mutation {
+	incrementCounter: Int
 }
 `;
 
@@ -24,11 +27,12 @@ const schema = buildSchema(schemaSDL);
 
 console.log(schema);
 
-let count = 0;
+let count = 42;
 
 const rootValue = {
 	currentTime: () => new Date().toLocaleString(),
-	counter: () => ++count,
+	counter: () => count,
+	incrementCounter: () => ++count,
 	//person: () => { firstName: 'Joe', lastName: 'Doe', age: 42 }
 };
 
@@ -50,3 +54,19 @@ export { schema, rootValue };
 // 	  "counter": 21
 // 	}
 //   }
+
+// http://localhost:3000/?query={counter}
+// {
+// 	"data": {
+// 	  "counter": 46
+// 	}
+// }
+// http://localhost:3000/?query=mutation%20%7B%0A%20%20incrementCounter%0A%7D%0A%0A%0A
+// mutation {
+// 	incrementCounter
+// }
+// {
+// 	"data": {
+// 	  "incrementCounter": 47
+// 	}
+// }  
