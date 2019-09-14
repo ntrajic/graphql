@@ -24,9 +24,11 @@ const schema = buildSchema(schemaSDL);
 
 console.log(schema);
 
+let count = 0;
+
 const rootValue = {
 	currentTime: () => new Date().toLocaleString(),
-	counter: () => 42,
+	counter: () => ++count,
 	//person: () => { firstName: 'Joe', lastName: 'Doe', age: 42 }
 };
 
@@ -40,3 +42,11 @@ export { schema, rootValue };
 // 	  "counter": 42
 // 	}
 // }
+
+// counter's state is 20
+// http://localhost:3000/?query={counter}
+// {
+// 	"data": {
+// 	  "counter": 21
+// 	}
+//   }
